@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = [];
 
 const addTodoReducer = createSlice({
@@ -9,7 +10,9 @@ const addTodoReducer = createSlice({
     addTodos: (state, action) => {
       state.push(action.payload);
       return state;
+   
     },
+
     //remove todos
     removeTodos: (state, action) => {
       return state.filter((item) => item.id !== action.payload);
@@ -22,6 +25,7 @@ const addTodoReducer = createSlice({
             item: action.payload.item,
           };
         }
+
         return todo;
       });
     },

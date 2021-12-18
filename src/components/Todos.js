@@ -2,13 +2,9 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { addTodos } from "../redux/reducer";
 import { GoPlus } from "react-icons/go";
-import axios from "axios";
 
-axios
-  .get("https://virtserver.swaggerhub.com/hanabyan/todo/1.0.0/to-do-list")
-  .then((response) => {
-    console.log(response);
-  });
+
+
 
 const mapStateToProps = (state) => {
   return {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
   addTodos,
@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
     todos: state,
   };
 };
+
 const mapDispatchToProps = (dispatch) => {
   return {
     addTodo: (obj) => dispatch(addTodos(obj)),
@@ -24,6 +25,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const DisplayTodos = (props) => {
   const [sort, setSort] = useState("active");
+
   return (
     <div className="displaytodos">
       <div className="buttons">

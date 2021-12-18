@@ -1,9 +1,17 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { IoCheckmarkDoneSharp, IoClose } from "react-icons/io5";
+import { todoList } from "../redux/services";
 
 const TodoItem = (props) => {
   const { item, updateTodo, removeTodo, completeTodo } = props;
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    todoList().then((response) => {
+      setList(response.data);
+      console.log(response.data);
+    });
+  }, []);
 
   const inputRef = useRef(true);
   const changeFocus = () => {
