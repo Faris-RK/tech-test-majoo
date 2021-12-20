@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import {
   addTodos,
   completeTodos,
@@ -7,6 +7,8 @@ import {
   updateTodos,
 } from "../redux/reducer";
 import TodoItem from "./TodoItem";
+
+import { getTodos } from "../store/action/todos";
 
 const mapStateToProps = (state) => {
   return {
@@ -24,8 +26,16 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const DisplayTodos = (props) => {
+  const dispatch = useDispatch();
+  const todoItem = useSelector((state) => state.todos);
+  console.log("todoitem", todoItem);
   const [sort, setSort] = useState("active");
-
+  const [list, setList] = useState([]);
+  useEffect(() => {
+    dispatch(getTodos());
+  }, []);
+  console.log("list", list);
+  console.log(props?.todos[0]?.length);
   return (
     <div className="displaytodos">
       <div className="buttons">
@@ -34,10 +44,10 @@ const DisplayTodos = (props) => {
         <button onClick={() => setSort("all")}>All</button>
       </div>
       <ul>
-        {props.todos.length > 0 && sort === "active"
-          ? props.todos.map((item) => {
+        {todoItem?.todos?.length > 0 && sort === "active"
+          ? todoItem?.todos?.map((item) => {
               return (
-                item.completed === false && (
+                item.status === 0 && (
                   <TodoItem
                     key={item.id}
                     item={item}
@@ -50,10 +60,10 @@ const DisplayTodos = (props) => {
             })
           : null}
         {/*for completed items */}
-        {props.todos.length > 0 && sort === "completed"
-          ? props.todos.map((item) => {
+        {todoItem?.todos?.length > 0 && sort === "completed"
+          ? todoItem?.todos?.map((item) => {
               return (
-                item.completed === true && (
+                item.status === 1 && (
                   <TodoItem
                     key={item.id}
                     item={item}
@@ -66,8 +76,8 @@ const DisplayTodos = (props) => {
             })
           : null}
         {/* for all items */}
-        {props.todos.length > 0 && sort === "all"
-          ? props.todos.map((item) => {
+        {todoItem?.todos?.length > 0 && sort === "all"
+          ? todoItem?.todos?.map((item) => {
               return (
                 <TodoItem
                   key={item.id}

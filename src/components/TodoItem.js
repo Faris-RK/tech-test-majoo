@@ -1,17 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { IoCheckmarkDoneSharp, IoClose } from "react-icons/io5";
-import { todoList } from "../redux/services";
+import { deleteTodos, editTodos, completeTodos } from "../store/action/todos";
+import { useDispatch } from "react-redux";
 
 const TodoItem = (props) => {
-  const { item, updateTodo, removeTodo, completeTodo } = props;
-  const [list, setList] = useState([]);
-  useEffect(() => {
-    todoList().then((response) => {
-      setList(response.data);
-      console.log(response.data);
-    });
-  }, []);
+  const dispatch = useDispatch();
+  const { item } = props;
 
   const inputRef = useRef(true);
   const changeFocus = () => {
@@ -19,37 +14,38 @@ const TodoItem = (props) => {
     inputRef.current.focus();
   };
   const update = (id, value, e) => {
-    if (e.which === 13) {
-      //13 is key bode for enter key
-      updateTodo({ id, item: value });
+    if (e.key === "Enter") {
+      //13 is key code for enter key
+      dispatch(editTodos(id, value));
       inputRef.current.disabled = true;
     }
   };
+
   return (
     <div>
       <li key={item.id} className="card">
         <textarea
           ref={inputRef}
           disabled={inputRef}
-          defaultValue={item.item}
-          onKeyPress={(e) => update(item.id, inputRef.current.value, e)}
+          defaultValue={item.title}
+          onKeyPress={(e) => update(item.id, e.target.value, e)}
         />
         <div className="btns">
           <button onClick={() => changeFocus()}>
             <AiFillEdit />
           </button>
-          {item.completed === false && (
+          {item.status === 0 && (
             <button
               style={{ color: "green" }}
-              onClick={() => completeTodo(item.id)}
+              onClick={() => dispatch(completeTodos(item.id))}
             >
               <IoCheckmarkDoneSharp />
             </button>
           )}
-          {item.completed === false && (
+          {item.status === 0 && (
             <button
               style={{ color: "red" }}
-              onClick={() => removeTodo(item.id)}
+              onClick={() => dispatch(deleteTodos(item.id))}
             >
               <IoClose />
             </button>

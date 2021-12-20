@@ -10,7 +10,6 @@ const addTodoReducer = createSlice({
     addTodos: (state, action) => {
       state.push(action.payload);
       return state;
-   
     },
 
     //remove todos
@@ -40,6 +39,10 @@ const addTodoReducer = createSlice({
         }
         return todo;
       });
+    },
+    getTodos: (state, action) => {
+      state.push(action.payload);
+      return state;
     },
   },
 });
